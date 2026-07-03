@@ -2,25 +2,38 @@ document
     .getElementById("loginForm")
     .addEventListener("submit", iniciarSesion);
 
+
 async function iniciarSesion(event) {
 
     event.preventDefault();
 
-    const usuario = document.getElementById("usuario").value.trim();
+    const usuario =
+        document.getElementById("usuario").value.trim();
 
-    const password = document.getElementById("password").value.trim();
+    const password =
+        document.getElementById("password").value.trim();
 
-    const mensaje = document.getElementById("mensaje");
+    const mensaje =
+        document.getElementById("mensaje");
 
     try {
 
-        const respuesta = await login(usuario, password);
+        const respuesta =
+            await login(usuario, password);
 
         if (respuesta.success) {
 
+            localStorage.setItem("adminLogueado", "true");
+
+            localStorage.setItem(
+                "nombreAdministrador",
+                respuesta.administrador.nombre
+            );
+
             mensaje.style.color = "green";
 
-            mensaje.textContent = `Bienvenido ${respuesta.administrador.nombre}`;
+            mensaje.textContent =
+                `Bienvenido ${respuesta.administrador.nombre}`;
 
             setTimeout(() => {
 
@@ -32,9 +45,14 @@ async function iniciarSesion(event) {
 
         else {
 
+            localStorage.removeItem("adminLogueado");
+
+            localStorage.removeItem("nombreAdministrador");
+
             mensaje.style.color = "red";
 
-            mensaje.textContent = "Usuario o contraseña incorrectos.";
+            mensaje.textContent =
+                "Usuario o contraseña incorrectos.";
 
         }
 
@@ -42,9 +60,14 @@ async function iniciarSesion(event) {
 
     catch (error) {
 
+        localStorage.removeItem("adminLogueado");
+
+        localStorage.removeItem("nombreAdministrador");
+
         mensaje.style.color = "red";
 
-        mensaje.textContent = "No se pudo conectar con el servidor.";
+        mensaje.textContent =
+            "No se pudo conectar con el servidor.";
 
         console.error(error);
 

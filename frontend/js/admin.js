@@ -1,8 +1,5 @@
-console.log("🔵 admin.js cargado");
+document.addEventListener("DOMContentLoaded", verificarSesion);
 
-window.addEventListener("beforeunload", () => {
-    console.log("🔴 LA PÁGINA SE ESTÁ RECARGANDO");
-});
 
 document
 .getElementById("archivoExcel")
@@ -15,6 +12,21 @@ document
 document
 .getElementById("btnSalir")
 .addEventListener("click", cerrarSesion);
+
+
+function verificarSesion(){
+
+    const adminLogueado =
+        localStorage.getItem("adminLogueado");
+
+    if(adminLogueado !== "true"){
+
+        window.location.href = "login.html";
+
+    }
+
+}
+
 
 function mostrarNombreArchivo(){
 
@@ -37,6 +49,7 @@ function mostrarNombreArchivo(){
     }
 
 }
+
 
 async function actualizarExcel(){
 
@@ -68,13 +81,59 @@ async function actualizarExcel(){
     resultado.className = "cargando";
 
     resultado.innerHTML = `
-        Actualizando la base de datos...
+        Actualizando la base de datos y reentrenando el modelo...
     `;
 
     try{
 
         const datos =
             await importarExcel(archivo);
+
+        let metricasModelo = "";
+
+        if(datos.modelo_actualizado && datos.metricas_modelo){
+
+            metricasModelo = `
+
+                <br>
+
+                <h3>Modelo de predicción actualizado</h3>
+
+                <p>
+                    <b>Estado del modelo:</b> Actualizado correctamente
+                </p>
+
+                <p>
+                    <b>MAE:</b> ${datos.metricas_modelo.mae}
+                </p>
+
+                <p>
+                    <b>RMSE:</b> ${datos.metricas_modelo.rmse}
+                </p>
+
+                <p>
+                    <b>R2:</b> ${datos.metricas_modelo.r2}
+                </p>
+
+            `;
+
+        }
+
+        else{
+
+            metricasModelo = `
+
+                <br>
+
+                <h3>Modelo de predicción</h3>
+
+                <p>
+                    No se recibió información del modelo actualizado.
+                </p>
+
+            `;
+
+        }
 
         resultado.className = "exito";
 
@@ -84,15 +143,27 @@ async function actualizarExcel(){
 
             <br>
 
-            <p><b>Filas del Excel:</b> ${datos.filas_excel}</p>
+            <p>
+                <b>Filas del Excel:</b> ${datos.filas_excel}
+            </p>
 
-            <p><b>Registros nuevos:</b> ${datos.registros_nuevos}</p>
+            <p>
+                <b>Registros nuevos:</b> ${datos.registros_nuevos}
+            </p>
 
-            <p><b>Registros existentes:</b> ${datos.registros_existentes}</p>
+            <p>
+                <b>Registros existentes:</b> ${datos.registros_existentes}
+            </p>
 
-            <p><b>Total en la base de datos:</b> ${datos.total_bd}</p>
+            <p>
+                <b>Total en la base de datos:</b> ${datos.total_bd}
+            </p>
 
-            <p><b>Última actualización:</b> ${datos.ultima_actualizacion}</p>
+            <p>
+                <b>Última actualización:</b> ${datos.ultima_actualizacion}
+            </p>
+
+            ${metricasModelo}
 
         `;
 
@@ -120,7 +191,12 @@ async function actualizarExcel(){
 
 }
 
+
 function cerrarSesion(){
+
+    localStorage.removeItem("adminLogueado");
+
+    localStorage.removeItem("nombreAdministrador");
 
     window.location.href = "login.html";
 
