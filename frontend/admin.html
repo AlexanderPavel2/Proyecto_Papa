@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Panel del Administrador</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <header>
+
+            <h1>Sistema de Predicción del Precio de la Papa</h1>
+
+            <p>Mercado Mayorista de Huancayo</p>
+
+        </header>
+
+        <!-- ==========================
+             ACTUALIZAR EXCEL
+        =========================== -->
+
+        <section class="card">
+
+            <h2>Actualización semanal de precios</h2>
+
+            <p class="descripcion">
+
+                Seleccione el archivo Excel con los precios de esta semana.
+
+            </p>
+
+            <input
+                type="file"
+                id="archivoExcel"
+                accept=".xlsx">
+
+            <p id="nombreArchivo">
+
+                Ningún archivo seleccionado.
+
+            </p>
+
+            <button
+                id="btnActualizar"
+                type="button">
+
+                Actualizar Base de Datos
+
+            </button>
+
+        </section>
+
+        <!-- ==========================
+            RESULTADO
+        =========================== -->
+
+        <section class="card">
+
+            <h2>Resultado</h2>
+
+            <div id="resultado">
+
+                Esperando actualización...
+
+            </div>
+
+        </section>
+
+        <!-- ==========================
+            CERRAR SESIÓN
+        =========================== -->
+
+        <section class="acciones">
+
+            <button
+                id="btnSalir"
+                type="button">
+
+                Cerrar sesión
+
+            </button>
+
+        </section>
+
+    </div>
+
+    <script src="js/api.js"></script>
+
+    <script src="js/admin.js"></script>
+
+</body>
+
+</html>

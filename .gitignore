@@ -1,0 +1,15 @@
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Archivos de caché
+__pycache__/
+*.pyc
+
+# Variables de entorno (¡Contraseñas y llaves de API!)
+.env
+
+# Bases de datos locales (opcional, si solo son de prueba)
+*.db
+*.sqlite3
