@@ -1,5 +1,6 @@
 const API = "http://127.0.0.1:8000";
 
+
 /* ==============================
    Última actualización
 ================================ */
@@ -11,6 +12,7 @@ async function obtenerUltimaActualizacion() {
     return await respuesta.json();
 
 }
+
 
 /* ==============================
    Estadísticas
@@ -24,6 +26,7 @@ async function obtenerEstadisticas() {
 
 }
 
+
 /* ==============================
    Historial de precios
 ================================ */
@@ -35,6 +38,20 @@ async function obtenerHistorial() {
     return await respuesta.json();
 
 }
+
+
+/* ==============================
+   Predicción
+================================ */
+
+async function obtenerPrediccion() {
+
+    const respuesta = await fetch(`${API}/prediccion`);
+
+    return await respuesta.json();
+
+}
+
 
 /* ==============================
    Login
@@ -64,24 +81,33 @@ async function login(usuario, password) {
 
 }
 
+
 /* ==============================
    Importar Excel
 ================================ */
 
-async function importarExcel(archivo){
+async function importarExcel(archivo) {
 
     const formulario = new FormData();
 
     formulario.append("archivo", archivo);
 
-    const respuesta = await fetch(`${API}/importar-excel`,{
+    const respuesta = await fetch(`${API}/importar-excel`, {
 
-        method:"POST",
+        method: "POST",
 
-        body:formulario
+        body: formulario
 
     });
 
-    return await respuesta.json();
+    const datos = await respuesta.json();
+
+    if (!respuesta.ok) {
+
+        throw new Error(datos.mensaje || "Error al importar el archivo.");
+
+    }
+
+    return datos;
 
 }

@@ -4,6 +4,8 @@ import tempfile
 import os
 
 from app.database.importador import ImportadorExcel
+from app.ia.entrenamiento import entrenar_y_guardar_modelo
+
 
 router = APIRouter()
 
@@ -11,26 +13,21 @@ router = APIRouter()
 @router.post("/importar-excel")
 async def importar_excel(archivo: UploadFile = File(...)):
 
-    # Verificar extensión
     if not archivo.filename.endswith(".xlsx"):
         return {
             "success": False,
             "mensaje": "Solo se permiten archivos Excel (.xlsx)."
         }
 
-    # Guardar temporalmente el archivo
     with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as temp:
         contenido = await archivo.read()
         temp.write(contenido)
         ruta_temporal = temp.name
 
-    # Leer el Excel
     df = pd.read_excel(ruta_temporal)
 
-    # Eliminar archivo temporal
     os.remove(ruta_temporal)
 
-    # Importar registros
     importador = ImportadorExcel()
 
     nuevos, existentes = importador.insertar_registros(df)
@@ -41,11 +38,19 @@ async def importar_excel(archivo: UploadFile = File(...)):
 
     importador.cerrar_conexion()
 
+    resultado_modelo = entrenar_y_guardar_modelo()
+
     return {
         "success": True,
         "filas_excel": len(df),
         "registros_nuevos": nuevos,
         "registros_existentes": existentes,
         "total_bd": total,
-        "ultima_actualizacion": fecha
+        "ultima_actualizacion": fecha,
+        "modelo_actualizado": True,
+        "metricas_modelo": {
+            "mae": resultado_modelo["mae"],
+            "rmse": resultado_modelo["rmse"],
+            "r2": resultado_modelo["r2"]
+        }
     }

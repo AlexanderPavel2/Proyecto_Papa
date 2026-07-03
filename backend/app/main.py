@@ -6,6 +6,8 @@ from app.api.configuracion import router as configuracion_router
 from app.api.estadisticas import router as estadisticas_router
 from app.api.historial import router as historial_router
 from fastapi.middleware.cors import CORSMiddleware
+from app.api.prediccion import router as prediccion_router
+
 
 app = FastAPI(
     title="Sistema de Información del Precio de la Papa",
@@ -32,6 +34,8 @@ app.include_router(configuracion_router)
 app.include_router(estadisticas_router)
 
 app.include_router(historial_router)
+
+app.include_router(prediccion_router)
 
 @app.get("/")
 def inicio():

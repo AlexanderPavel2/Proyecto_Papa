@@ -38,6 +38,84 @@
 
         </section>
 
+        <section id="prediccion">
+
+        </section>
+
+        <section id="asistenteNegociacion">
+
+            <h2>Asistente para la negociación</h2>
+
+            <p>
+                Ingrese la oferta del comprador y la cantidad de papa que desea vender.
+                El sistema comparará la oferta, calculará los ingresos y mostrará una recomendación.
+            </p>
+
+            <label for="ofertaComprador">
+                Oferta del comprador en S/ por kg
+            </label>
+
+            <input
+                type="number"
+                id="ofertaComprador"
+                placeholder="Ejemplo: 0.80"
+                step="0.01"
+                min="0">
+
+            <label for="cantidadKilos">
+                Cantidad de papa en kg
+            </label>
+
+            <input
+                type="number"
+                id="cantidadKilos"
+                placeholder="Ejemplo: 1000"
+                step="1"
+                min="1">
+
+            <button id="btnAnalizarNegociacion">
+                Analizar negociación
+            </button>
+
+            <div id="resultadoNegociacion">
+
+            </div>
+
+        </section>
+
+        <section id="filtroFechas">
+
+            <h2>Buscar historial por fechas</h2>
+
+            <p>
+                Seleccione un rango de fechas para consultar el historial de precios.
+                Si no aplica filtros, se mostrarán los últimos 15 registros.
+            </p>
+
+            <div class="contenedor-filtros">
+
+                <div>
+                    <label for="fechaInicio">Fecha inicial</label>
+                    <input type="date" id="fechaInicio">
+                </div>
+
+                <div>
+                    <label for="fechaFin">Fecha final</label>
+                    <input type="date" id="fechaFin">
+                </div>
+
+            </div>
+
+            <button id="btnFiltrarFechas">
+                Buscar por fechas
+            </button>
+
+            <button id="btnUltimosRegistros">
+                Mostrar últimos 15
+            </button>
+
+        </section>
+
         <section id="tablaPrecios">
 
         </section>
