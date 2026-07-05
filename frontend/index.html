@@ -2,154 +2,146 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Sistema de Información del Precio de la Papa</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RantiPapa</title>
     <link rel="stylesheet" href="css/style.css">
-
 </head>
 
 <body>
+    <header class="encabezado-principal">
+        <nav class="barra-navegacion" aria-label="Navegacion principal">
+            <a class="marca" href="#inicio" aria-label="Ir al inicio">
+                <span class="marca-icono">
+                    <img src="img/rantipapa-logo.png" alt="">
+                </span>
+                <span class="marca-texto">
+                    <strong>RantiPapa</strong>
+                </span>
+            </a>
 
-    <header>
+            <div class="enlaces-navegacion">
+                <a href="#estadisticas">Precios</a>
+                <a href="#prediccion">Prediccion</a>
+                <a href="#asistenteNegociacion">Negociacion</a>
+                <a href="#tablaPrecios">Historial</a>
+            </div>
+        </nav>
 
-        <h1>
-            Sistema de Información del Precio de la Papa
-        </h1>
+        <section id="inicio" class="hero">
+            <div class="hero-contenido">
+                <p class="etiqueta">Papa blanca en Huancayo</p>
+                <h1>Sistema de informacion para decidir el mejor precio de la papa</h1>
+                <p class="hero-texto">
+                    Informacion clara para vender mejor la papa.
+                </p>
 
-        <p>
-            Mercado Mayorista de Huancayo
-        </p>
+                <div class="hero-acciones">
+                    <a class="boton boton-primario" href="#asistenteNegociacion">Analizar oferta</a>
+                    <a class="boton boton-secundario" href="#grafico">Ver evolucion</a>
+                </div>
+            </div>
 
+            <aside class="hero-panel" aria-label="Resumen del problema">
+                <span class="panel-etiqueta">Decision informada</span>
+                <h2>Compare precios antes de aceptar una oferta.</h2>
+                <p>
+                    RantiPapa muestra referencias del mercado para negociar con mas seguridad.
+                </p>
+            </aside>
+        </section>
     </header>
 
     <main>
+        <section id="ultimaActualizacion" class="bloque bloque-compacto" aria-live="polite"></section>
 
-        <section id="ultimaActualizacion">
+        <section id="estadisticas" class="bloque" aria-live="polite"></section>
 
-        </section>
+        <section id="prediccion" class="bloque" aria-live="polite"></section>
 
-        <section id="estadisticas">
-
-        </section>
-
-        <section id="prediccion">
-
-        </section>
-
-        <section id="asistenteNegociacion">
-
-            <h2>Asistente para la negociación</h2>
-
-            <p>
-                Ingrese la oferta del comprador y la cantidad de papa que desea vender.
-                El sistema comparará la oferta, calculará los ingresos y mostrará una recomendación.
-            </p>
-
-            <label for="ofertaComprador">
-                Oferta del comprador en S/ por kg
-            </label>
-
-            <input
-                type="number"
-                id="ofertaComprador"
-                placeholder="Ejemplo: 0.80"
-                step="0.01"
-                min="0">
-
-            <label for="cantidadKilos">
-                Cantidad de papa en kg
-            </label>
-
-            <input
-                type="number"
-                id="cantidadKilos"
-                placeholder="Ejemplo: 1000"
-                step="1"
-                min="1">
-
-            <button id="btnAnalizarNegociacion">
-                Analizar negociación
-            </button>
-
-            <div id="resultadoNegociacion">
-
+        <section id="asistenteNegociacion" class="bloque bloque-asistente">
+            <div class="encabezado-seccion">
+                <p class="etiqueta">Asistente de negociacion</p>
+                <h2>Compare la oferta del comprador con el mercado</h2>
+                <p>
+                    Ingrese la oferta y la cantidad disponible en kilogramos.
+                </p>
             </div>
 
+            <div class="panel-formulario">
+                <div class="campo-formulario">
+                    <label for="ofertaComprador">Oferta del comprador en S/ por kg</label>
+                    <input type="number" id="ofertaComprador" placeholder="Ejemplo: 0.80" step="0.01" min="0">
+                </div>
+
+                <div id="grupoKilos" class="campo-formulario">
+                    <label for="cantidadKilos">Cantidad de papa en kg</label>
+                    <input type="number" id="cantidadKilos" placeholder="Ejemplo: 1000" step="1" min="1">
+                </div>
+
+                <button id="btnAnalizarNegociacion" class="boton boton-primario" type="button">
+                    Analizar negociacion
+                </button>
+            </div>
+
+            <div id="resultadoNegociacion" aria-live="polite"></div>
         </section>
 
-        <section id="filtroFechas">
-
-            <h2>Buscar historial por fechas</h2>
-
-            <p>
-                Seleccione un rango de fechas para consultar el historial de precios.
-                Si no aplica filtros, se mostrarán los últimos 15 registros.
-            </p>
+        <section id="filtroFechas" class="bloque">
+            <div class="encabezado-seccion">
+                <p class="etiqueta">Historial</p>
+                <h2>Buscar historial por fechas</h2>
+                <p>
+                    Seleccione un rango de fechas para consultar el historial de precios. Si no aplica filtros, se mostraran los ultimos 15 registros.
+                </p>
+            </div>
 
             <div class="contenedor-filtros">
-
-                <div>
+                <div class="campo-formulario">
                     <label for="fechaInicio">Fecha inicial</label>
                     <input type="date" id="fechaInicio">
                 </div>
 
-                <div>
+                <div class="campo-formulario">
                     <label for="fechaFin">Fecha final</label>
                     <input type="date" id="fechaFin">
                 </div>
-
             </div>
 
-            <button id="btnFiltrarFechas">
-                Buscar por fechas
-            </button>
-
-            <button id="btnUltimosRegistros">
-                Mostrar últimos 15
-            </button>
-
+            <div class="acciones-filtro">
+                <button id="btnFiltrarFechas" class="boton boton-primario" type="button">Buscar por fechas</button>
+                <button id="btnUltimosRegistros" class="boton boton-secundario" type="button">Mostrar ultimos 15</button>
+            </div>
         </section>
 
-        <section id="tablaPrecios">
+        <section id="tablaPrecios" class="bloque" aria-live="polite"></section>
 
+        <section id="grafico" class="bloque">
+            <div class="encabezado-seccion">
+                <p class="etiqueta">Tendencia</p>
+                <h2>Evolucion del precio</h2>
+            </div>
+            <div class="contenedor-grafico">
+                <canvas id="graficoPrecios"></canvas>
+            </div>
         </section>
 
-        <section id="grafico">
-
-            <h2>Evolución del Precio</h2>
-
-            <canvas id="graficoPrecios"></canvas>
-
-        </section>
-
-        <section>
-
+        <section class="bloque bloque-admin" aria-label="Acceso administrativo">
             <a href="login.html">
-
-                <button id="btnAdmin">
-
-                    Administrador
-
-                </button>
-
+                <button id="btnAdmin" type="button">Administrador</button>
             </a>
-
         </section>
-
     </main>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <footer class="pie-pagina">
+        <p>RantiPapa: informacion simple para vender mejor la papa blanca.</p>
+    </footer>
 
-<script src="js/api.js"></script>
-
-<script src="js/index.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/negociacion.js"></script>
+    <script src="js/index.js"></script>
 </body>
 
 </html>
