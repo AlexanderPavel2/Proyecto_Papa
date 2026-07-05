@@ -1,36 +1,27 @@
-document.addEventListener("DOMContentLoaded", iniciarSistema);
-
-
 /* ==============================
-   Variables globales
+   Inicializacion
 ================================ */
 
-let historialCompleto = [];
+document.addEventListener("DOMContentLoaded", iniciarSistema);
 
+let historialCompleto = [];
 let graficoPrecios = null;
+let prediccionActual = null;
 
 const LIMITE_REGISTROS = 15;
 
-
-/* ==============================
-   Inicio del sistema
-================================ */
-
 async function iniciarSistema() {
+    registrarEventos();
+    PapaNegociacion.inicializar();
 
-    await cargarUltimaActualizacion();
-
-    await cargarEstadisticas();
-
-    await cargarPrediccion();
-
-    await cargarHistorialCompleto();
-
+    await cargarDatosIniciales();
     mostrarUltimosRegistros();
+}
 
+function registrarEventos() {
     document
         .getElementById("btnAnalizarNegociacion")
-        .addEventListener("click", analizarNegociacion);
+        .addEventListener("click", PapaNegociacion.analizar);
 
     document
         .getElementById("btnFiltrarFechas")
@@ -39,716 +30,364 @@ async function iniciarSistema() {
     document
         .getElementById("btnUltimosRegistros")
         .addEventListener("click", mostrarUltimosRegistros);
-
 }
 
-
 /* ==============================
-   Última actualización
+   Carga de datos
 ================================ */
+
+async function cargarDatosIniciales() {
+    await cargarUltimaActualizacion();
+    await cargarEstadisticas();
+    await cargarPrediccion();
+    await cargarHistorialCompleto();
+}
 
 async function cargarUltimaActualizacion() {
-
     try {
-
         const datos = await obtenerUltimaActualizacion();
-
-        const contenedor =
-            document.getElementById("ultimaActualizacion");
-
-        contenedor.innerHTML = `
-
-            <h2>Última actualización</h2>
-
-            <p>
-                ${datos.ultima_actualizacion || "No registrada"}
-            </p>
-
-        `;
-
+        renderizarUltimaActualizacion(datos);
     }
-
     catch (error) {
-
         console.error(error);
-
     }
-
 }
-
-
-/* ==============================
-   Estadísticas
-================================ */
 
 async function cargarEstadisticas() {
-
     try {
-
         const datos = await obtenerEstadisticas();
-
-        const contenedor =
-            document.getElementById("estadisticas");
-
-        contenedor.innerHTML = `
-
-            <div class="contenedor-tarjetas">
-
-                <div class="tarjeta">
-
-                    <h3>Precio Actual</h3>
-
-                    <p>S/ ${Number(datos.precio_actual).toFixed(2)}</p>
-
-                </div>
-
-                <div class="tarjeta">
-
-                    <h3>Precio Máximo</h3>
-
-                    <p>S/ ${Number(datos.precio_maximo).toFixed(2)}</p>
-
-                </div>
-
-                <div class="tarjeta">
-
-                    <h3>Precio Mínimo</h3>
-
-                    <p>S/ ${Number(datos.precio_minimo).toFixed(2)}</p>
-
-                </div>
-
-                <div class="tarjeta">
-
-                    <h3>Precio Promedio</h3>
-
-                    <p>S/ ${Number(datos.precio_promedio).toFixed(2)}</p>
-
-                </div>
-
-            </div>
-
-        `;
-
+        renderizarEstadisticas(datos);
     }
-
     catch (error) {
-
         console.error(error);
-
     }
-
 }
-
-
-/* ==============================
-   Predicción
-================================ */
 
 async function cargarPrediccion() {
+    const contenedor = document.getElementById("prediccion");
 
     try {
-
-        const datos = await obtenerPrediccion();
-
-        const contenedor =
-            document.getElementById("prediccion");
-
-        contenedor.innerHTML = `
-
-            <h2>Predicción del Precio</h2>
-
-            <div class="contenedor-tarjetas">
-
-                <div class="tarjeta">
-
-                    <h3>Último Precio Registrado</h3>
-
-                    <p>S/ ${Number(datos.precio_ultimo_registro).toFixed(2)}</p>
-
-                    <small>
-                        Fecha: ${datos.fecha_ultimo_registro}
-                    </small>
-
-                </div>
-
-                <div class="tarjeta">
-
-                    <h3>Precio Predicho</h3>
-
-                    <p>S/ ${Number(datos.precio_predicho).toFixed(2)}</p>
-
-                    <small>
-                        Fecha estimada: ${datos.fecha_prediccion}
-                    </small>
-
-                </div>
-
-            </div>
-
-        `;
-
+        prediccionActual = await obtenerPrediccion();
+        renderizarPrediccion(prediccionActual);
     }
-
     catch (error) {
-
         console.error(error);
-
-        const contenedor =
-            document.getElementById("prediccion");
-
         contenedor.innerHTML = `
-
-            <h2>Predicción del Precio</h2>
-
-            <p class="mensaje-error">
-                No se pudo cargar la predicción.
-            </p>
-
+            <div class="encabezado-seccion">
+                <p class="etiqueta">Prediccion</p>
+                <h2>No se pudo cargar la prediccion</h2>
+            </div>
+            ${PapaUtils.crearMensajeError("No se pudo cargar la prediccion.")}
         `;
-
     }
-
 }
-
-
-/* ==============================
-   Cargar historial completo
-================================ */
 
 async function cargarHistorialCompleto() {
-
     try {
-
         historialCompleto = await obtenerHistorial();
-
     }
-
     catch (error) {
-
         console.error(error);
-
         historialCompleto = [];
-
     }
-
 }
 
+/* ==============================
+   Renderizado de tarjetas
+================================ */
+
+function renderizarUltimaActualizacion(datos) {
+    const contenedor = document.getElementById("ultimaActualizacion");
+
+    contenedor.innerHTML = `
+        <div>
+            <p class="etiqueta">Datos del sistema</p>
+            <h2>Ultima actualizacion</h2>
+        </div>
+        <p><strong>${PapaUtils.formatearFecha(datos.ultima_actualizacion)}</strong></p>
+    `;
+}
+
+function renderizarEstadisticas(datos) {
+    const contenedor = document.getElementById("estadisticas");
+
+    contenedor.innerHTML = `
+        <div class="encabezado-seccion">
+            <p class="etiqueta">Resumen de mercado</p>
+            <h2>Precios de referencia</h2>
+            <p>Use estos datos como base antes de vender.</p>
+        </div>
+
+        <div class="contenedor-tarjetas">
+            ${crearTarjetaPrecio("Precio actual", datos.precio_actual, "Referencia principal para negociar hoy.", true)}
+            ${crearTarjetaPrecio("Precio maximo", datos.precio_maximo, "Mayor valor observado en los registros.")}
+            ${crearTarjetaPrecio("Precio minimo", datos.precio_minimo, "Menor valor observado en los registros.")}
+            ${crearTarjetaPrecio("Precio promedio", datos.precio_promedio, "Promedio historico del conjunto registrado.")}
+        </div>
+    `;
+}
+
+function renderizarPrediccion(datos) {
+    const contenedor = document.getElementById("prediccion");
+
+    contenedor.innerHTML = `
+        <div class="encabezado-seccion">
+            <p class="etiqueta">Prediccion</p>
+            <h2>Proyeccion del precio</h2>
+            <p>Una referencia adicional para decidir si vender o negociar.</p>
+        </div>
+
+        <div class="prediccion-grid">
+            <div class="prediccion-resumen">
+                <h3>Lectura rapida</h3>
+                <p>
+                    El precio predicho esta ${PapaUtils.compararValores(datos.precio_predicho, datos.precio_ultimo_registro, "moneda")}
+                    frente al ultimo precio registrado.
+                </p>
+            </div>
+
+            <div class="contenedor-tarjetas">
+                ${crearTarjetaPrecio("Ultimo precio registrado", datos.precio_ultimo_registro, `Fecha: ${PapaUtils.formatearFecha(datos.fecha_ultimo_registro)}`, true)}
+                ${crearTarjetaPrecio("Precio predicho", datos.precio_predicho, `Fecha estimada: ${PapaUtils.formatearFecha(datos.fecha_prediccion)}`)}
+            </div>
+        </div>
+    `;
+}
+
+function crearTarjetaPrecio(titulo, valor, detalle, destacada = false) {
+    const claseDestacada = destacada ? " tarjeta-destacada" : "";
+
+    return `
+        <article class="tarjeta${claseDestacada}">
+            <h3>${titulo}</h3>
+            <p>${PapaUtils.formatearMoneda(valor)}</p>
+            <small>${detalle}</small>
+        </article>
+    `;
+}
 
 /* ==============================
-   Mostrar últimos registros
+   Filtros de historial
 ================================ */
 
 function mostrarUltimosRegistros() {
-
-    const datos =
-        historialCompleto.slice(-LIMITE_REGISTROS);
+    const datos = historialCompleto.slice(-LIMITE_REGISTROS);
 
     document.getElementById("fechaInicio").value = "";
-
     document.getElementById("fechaFin").value = "";
 
+    if (estaHistorialVacio()) {
+        renderizarMensajeHistorial("No hay registros disponibles para mostrar.");
+        cargarGrafico([]);
+        return;
+    }
+
     cargarTabla(datos);
-
     cargarGrafico(datos);
-
 }
 
-
-/* ==============================
-   Filtrar por fechas
-================================ */
-
 function filtrarPorFechas() {
-
-    const fechaInicio =
-        document.getElementById("fechaInicio").value;
-
-    const fechaFin =
-        document.getElementById("fechaFin").value;
+    const fechaInicio = document.getElementById("fechaInicio").value;
+    const fechaFin = document.getElementById("fechaFin").value;
 
     if (!fechaInicio || !fechaFin) {
-
-        document.getElementById("tablaPrecios").innerHTML = `
-
-            <h2>Historial de Precios</h2>
-
-            <p class="mensaje-error">
-                Seleccione la fecha inicial y la fecha final.
-            </p>
-
-        `;
-
+        renderizarMensajeHistorial("Seleccione la fecha inicial y la fecha final.");
         cargarGrafico([]);
-
         return;
-
     }
 
     if (fechaInicio > fechaFin) {
-
-        document.getElementById("tablaPrecios").innerHTML = `
-
-            <h2>Historial de Precios</h2>
-
-            <p class="mensaje-error">
-                La fecha inicial no puede ser mayor que la fecha final.
-            </p>
-
-        `;
-
+        renderizarMensajeHistorial("La fecha inicial no puede ser mayor que la fecha final.");
         cargarGrafico([]);
-
         return;
-
     }
 
-    const datosFiltrados =
-        historialCompleto.filter(registro => {
-
-            return registro.fecha >= fechaInicio &&
-                   registro.fecha <= fechaFin;
-
-        });
+    const datosFiltrados = historialCompleto.filter(registro => {
+        return registro.fecha >= fechaInicio && registro.fecha <= fechaFin;
+    });
 
     if (datosFiltrados.length === 0) {
-
-        document.getElementById("tablaPrecios").innerHTML = `
-
-            <h2>Historial de Precios</h2>
-
-            <p class="mensaje-error">
-                No se encontraron registros en el rango seleccionado.
-            </p>
-
-        `;
-
+        renderizarMensajeHistorial("No se encontraron registros en el rango seleccionado.");
         cargarGrafico([]);
-
         return;
-
     }
 
     cargarTabla(datosFiltrados);
-
     cargarGrafico(datosFiltrados);
-
 }
-
-
-/* ==============================
-   Tabla de precios
-================================ */
 
 function cargarTabla(datos) {
+    const contenedor = document.getElementById("tablaPrecios");
+    const filas = datos.map(precio => `
+        <tr>
+            <td>${PapaUtils.formatearFecha(precio.fecha)}</td>
+            <td>${PapaUtils.formatearMoneda(precio.precio_promedio)}</td>
+        </tr>
+    `).join("");
 
-    const contenedor =
-        document.getElementById("tablaPrecios");
-
-    let tabla = `
-
-        <h2>Historial de Precios</h2>
-
-        <p>
-            Mostrando ${datos.length} registro(s).
-        </p>
+    contenedor.innerHTML = `
+        <div class="encabezado-seccion">
+            <p class="etiqueta">Registros consultados</p>
+            <h2>Historial de precios</h2>
+            <p>Mostrando ${datos.length} registro(s).</p>
+        </div>
 
         <table>
-
             <thead>
-
                 <tr>
                     <th>Fecha</th>
-                    <th>Precio (S/ Kg)</th>
+                    <th>Precio (S/ kg)</th>
                 </tr>
-
             </thead>
-
             <tbody>
-
-    `;
-
-    datos.forEach(precio => {
-
-        tabla += `
-
-            <tr>
-                <td>${precio.fecha}</td>
-                <td>S/ ${Number(precio.precio_promedio).toFixed(2)}</td>
-            </tr>
-
-        `;
-
-    });
-
-    tabla += `
-
+                ${filas}
             </tbody>
-
         </table>
-
     `;
-
-    contenedor.innerHTML = tabla;
-
 }
 
+function renderizarMensajeHistorial(mensaje) {
+    document.getElementById("tablaPrecios").innerHTML = `
+        <div class="encabezado-seccion">
+            <p class="etiqueta">Registros consultados</p>
+            <h2>Historial de precios</h2>
+        </div>
+        ${PapaUtils.crearMensajeError(mensaje)}
+    `;
+}
 
 /* ==============================
-   Gráfico de precios
+   Grafico
 ================================ */
 
 async function cargarGrafico(datos) {
-
     try {
-
-        const fechas = [];
-
-        const preciosHistoricos = [];
-
-        const preciosPrediccion = [];
-
-        datos.forEach(registro => {
-
-            fechas.push(registro.fecha);
-
-            preciosHistoricos.push(registro.precio_promedio);
-
-            preciosPrediccion.push(null);
-
-        });
-
-        const ultimoRegistroGeneral =
-            historialCompleto[historialCompleto.length - 1];
-
-        const ultimoRegistroMostrado =
-            datos[datos.length - 1];
-
-        const debeMostrarPrediccion =
-            datos.length > 0 &&
-            ultimoRegistroGeneral &&
-            ultimoRegistroMostrado &&
-            ultimoRegistroMostrado.fecha === ultimoRegistroGeneral.fecha;
-
-        if (debeMostrarPrediccion) {
-
-            const prediccion =
-                await obtenerPrediccion();
-
-            const ultimoPrecio =
-                ultimoRegistroMostrado.precio_promedio;
-
-            fechas.push(prediccion.fecha_prediccion);
-
-            preciosHistoricos.push(null);
-
-            preciosPrediccion[preciosPrediccion.length - 1] =
-                ultimoPrecio;
-
-            preciosPrediccion.push(prediccion.precio_predicho);
-
-        }
-
-        const ctx = document
-            .getElementById("graficoPrecios")
-            .getContext("2d");
+        const datosGrafico = await construirDatosGrafico(datos);
+        const ctx = document.getElementById("graficoPrecios").getContext("2d");
 
         if (graficoPrecios) {
-
             graficoPrecios.destroy();
-
-        }
-
-        const datasets = [
-
-            {
-                label: "Precio histórico (S/ Kg)",
-                data: preciosHistoricos,
-                borderColor: "#2E7D32",
-                backgroundColor: "rgba(46,125,50,0.15)",
-                borderWidth: 3,
-                fill: true,
-                tension: 0.3
-            }
-
-        ];
-
-        if (debeMostrarPrediccion) {
-
-            datasets.push({
-
-                label: "Predicción siguiente semana",
-                data: preciosPrediccion,
-                borderColor: "#F57C00",
-                backgroundColor: "rgba(245,124,0,0.15)",
-                borderWidth: 3,
-                borderDash: [8, 5],
-                fill: false,
-                tension: 0.3
-
-            });
-
         }
 
         graficoPrecios = new Chart(ctx, {
-
             type: "line",
-
             data: {
-
-                labels: fechas,
-
-                datasets: datasets
-
+                labels: datosGrafico.fechas,
+                datasets: crearDatasets(datosGrafico)
             },
-
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                plugins: {
-
-                    legend: {
-                        display: true
-                    }
-
-                },
-
-                scales: {
-
-                    y: {
-                        beginAtZero: false
-                    }
-
-                }
-
-            }
-
+            options: obtenerOpcionesGrafico()
         });
-
     }
-
     catch (error) {
-
         console.error(error);
-
     }
-
 }
 
+async function construirDatosGrafico(datos) {
+    const fechas = [];
+    const preciosHistoricos = [];
+    const preciosPrediccion = [];
+
+    datos.forEach(registro => {
+        fechas.push(registro.fecha);
+        preciosHistoricos.push(registro.precio_promedio);
+        preciosPrediccion.push(null);
+    });
+
+    const ultimoRegistroGeneral = historialCompleto[historialCompleto.length - 1];
+    const ultimoRegistroMostrado = datos[datos.length - 1];
+    const debeMostrarPrediccion = datos.length > 0 &&
+        ultimoRegistroGeneral &&
+        ultimoRegistroMostrado &&
+        ultimoRegistroMostrado.fecha === ultimoRegistroGeneral.fecha;
+
+    if (debeMostrarPrediccion) {
+        const prediccion = prediccionActual || await obtenerPrediccion();
+        const ultimoPrecio = ultimoRegistroMostrado.precio_promedio;
+
+        fechas.push(prediccion.fecha_prediccion);
+        preciosHistoricos.push(null);
+        preciosPrediccion[preciosPrediccion.length - 1] = ultimoPrecio;
+        preciosPrediccion.push(prediccion.precio_predicho);
+    }
+
+    return {
+        debeMostrarPrediccion,
+        fechas,
+        preciosHistoricos,
+        preciosPrediccion
+    };
+}
+
+function crearDatasets(datosGrafico) {
+    const datasets = [
+        {
+            label: "Precio historico (S/ kg)",
+            data: datosGrafico.preciosHistoricos,
+            borderColor: "#2f7d45",
+            backgroundColor: "rgba(47, 125, 69, 0.16)",
+            borderWidth: 3,
+            fill: true,
+            tension: 0.3
+        }
+    ];
+
+    if (datosGrafico.debeMostrarPrediccion) {
+        datasets.push({
+            label: "Prediccion siguiente fecha",
+            data: datosGrafico.preciosPrediccion,
+            borderColor: "#c98f2b",
+            backgroundColor: "rgba(201, 143, 43, 0.16)",
+            borderWidth: 3,
+            borderDash: [8, 5],
+            fill: false,
+            tension: 0.3
+        });
+    }
+
+    return datasets;
+}
+
+function obtenerOpcionesGrafico() {
+    return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    color: "#263128",
+                    font: {
+                        weight: "bold"
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: "#657164"
+                },
+                grid: {
+                    color: "rgba(101, 113, 100, 0.14)"
+                }
+            },
+            y: {
+                beginAtZero: false,
+                ticks: {
+                    color: "#657164"
+                },
+                grid: {
+                    color: "rgba(101, 113, 100, 0.14)"
+                }
+            }
+        }
+    };
+}
 
 /* ==============================
-   Asistente de negociación
+   Utilidades
 ================================ */
 
-async function analizarNegociacion() {
-
-    const oferta =
-        Number(document.getElementById("ofertaComprador").value);
-
-    const cantidad =
-        Number(document.getElementById("cantidadKilos").value);
-
-    const resultado =
-        document.getElementById("resultadoNegociacion");
-
-    if (!oferta || oferta <= 0) {
-
-        resultado.innerHTML = `
-
-            <p class="mensaje-error">
-                Ingrese una oferta válida del comprador.
-            </p>
-
-        `;
-
-        return;
-
-    }
-
-    if (!cantidad || cantidad <= 0) {
-
-        resultado.innerHTML = `
-
-            <p class="mensaje-error">
-                Ingrese una cantidad válida de kilos.
-            </p>
-
-        `;
-
-        return;
-
-    }
-
-    try {
-
-        const estadisticas =
-            await obtenerEstadisticas();
-
-        const prediccion =
-            await obtenerPrediccion();
-
-        const precioActual =
-            Number(estadisticas.precio_actual);
-
-        const precioPredicho =
-            Number(prediccion.precio_predicho);
-
-        const diferenciaOferta =
-            oferta - precioActual;
-
-        const ingresoOferta =
-            cantidad * oferta;
-
-        const ingresoActual =
-            cantidad * precioActual;
-
-        const ingresoPredicho =
-            cantidad * precioPredicho;
-
-        const diferenciaIngresoActual =
-            ingresoOferta - ingresoActual;
-
-        const diferenciaIngresoPredicho =
-            ingresoPredicho - ingresoOferta;
-
-        let claseMensaje = "";
-
-        let tituloRecomendacion = "";
-
-        let mensajeRecomendacion = "";
-
-        if (oferta < precioActual) {
-
-            claseMensaje = "mensaje-alerta";
-
-            tituloRecomendacion = "Se recomienda negociar";
-
-            mensajeRecomendacion = `
-                La oferta del comprador está por debajo del precio actual del mercado.
-                El agricultor podría usar el precio actual como referencia para pedir una mejor oferta.
-            `;
-
-        }
-
-        else if (precioPredicho > precioActual && precioPredicho > oferta) {
-
-            claseMensaje = "mensaje-neutral";
-
-            tituloRecomendacion = "Podría negociar un mejor precio";
-
-            mensajeRecomendacion = `
-                La oferta es aceptable frente al precio actual, pero el precio predicho es mayor.
-                El agricultor podría negociar considerando la posible subida del precio.
-            `;
-
-        }
-
-        else {
-
-            claseMensaje = "mensaje-exito";
-
-            tituloRecomendacion = "Oferta favorable";
-
-            mensajeRecomendacion = `
-                La oferta del comprador está igual o por encima del precio actual.
-                El agricultor podría considerar aceptar la oferta si le resulta conveniente.
-            `;
-
-        }
-
-        resultado.innerHTML = `
-
-            <div class="${claseMensaje}">
-
-                <h3>${tituloRecomendacion}</h3>
-
-                <p>
-                    ${mensajeRecomendacion}
-                </p>
-
-                <br>
-
-                <h4>Comparación de precios</h4>
-
-                <p>
-                    Precio actual del mercado:
-                    <b>S/ ${precioActual.toFixed(2)} por kg</b>
-                </p>
-
-                <p>
-                    Precio predicho:
-                    <b>S/ ${precioPredicho.toFixed(2)} por kg</b>
-                </p>
-
-                <p>
-                    Oferta del comprador:
-                    <b>S/ ${oferta.toFixed(2)} por kg</b>
-                </p>
-
-                <p>
-                    Diferencia frente al precio actual:
-                    <b>S/ ${diferenciaOferta.toFixed(2)} por kg</b>
-                </p>
-
-                <br>
-
-                <h4>Simulación de ingresos</h4>
-
-                <p>
-                    Cantidad ingresada:
-                    <b>${cantidad.toFixed(0)} kg</b>
-                </p>
-
-                <p>
-                    Ingreso con oferta del comprador:
-                    <b>S/ ${ingresoOferta.toFixed(2)}</b>
-                </p>
-
-                <p>
-                    Ingreso según precio actual:
-                    <b>S/ ${ingresoActual.toFixed(2)}</b>
-                </p>
-
-                <p>
-                    Ingreso según precio predicho:
-                    <b>S/ ${ingresoPredicho.toFixed(2)}</b>
-                </p>
-
-                <br>
-
-                <h4>Diferencias estimadas</h4>
-
-                <p>
-                    Diferencia entre oferta y precio actual:
-                    <b>S/ ${diferenciaIngresoActual.toFixed(2)}</b>
-                </p>
-
-                <p>
-                    Diferencia entre precio predicho y oferta:
-                    <b>S/ ${diferenciaIngresoPredicho.toFixed(2)}</b>
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
-    catch (error) {
-
-        console.error(error);
-
-        resultado.innerHTML = `
-
-            <p class="mensaje-error">
-                No se pudo realizar el análisis de negociación.
-            </p>
-
-        `;
-
-    }
-
+function estaHistorialVacio() {
+    return historialCompleto.length === 0;
 }

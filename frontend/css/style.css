@@ -1,283 +1,632 @@
-*{
-
-    margin:0;
-
-    padding:0;
-
-    box-sizing:border-box;
-
-    font-family:Arial, Helvetica, sans-serif;
-
+:root {
+    --verde-oscuro: #1f4d2f;
+    --verde: #2f7d45;
+    --verde-claro: #e8f3e6;
+    --tierra: #8a5a2f;
+    --tierra-claro: #f1e5d3;
+    --dorado: #c98f2b;
+    --blanco: #ffffff;
+    --fondo: #f7f5ef;
+    --texto: #263128;
+    --texto-suave: #657164;
+    --borde: #dfe4d8;
+    --error: #b42318;
+    --alerta: #9a5b00;
+    --exito: #1f7a3b;
+    --sombra: 0 18px 45px rgba(31, 77, 47, 0.12);
 }
 
-body{
-
-    background:#f4f4f4;
-
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-header{
-
-    background:#2E7D32;
-
-    color:white;
-
-    text-align:center;
-
-    padding:20px;
-
+html {
+    scroll-behavior: smooth;
 }
 
-main{
-
-    width:90%;
-
-    max-width:1200px;
-
-    margin:auto;
-
-    margin-top:25px;
-
+body {
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
 }
 
-section{
-
-    background:white;
-
-    border-radius:10px;
-
-    padding:20px;
-
-    margin-bottom:20px;
-
-    box-shadow:0 2px 5px rgba(0,0,0,.15);
-
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
-/* ==========================
+button,
+input {
+    font: inherit;
+}
+
+button {
+    border: 0;
+}
+
+/* ==============================
+   Estructura principal
+================================ */
+
+.encabezado-principal {
+    background:
+        linear-gradient(90deg, rgba(31, 77, 47, 0.94) 0%, rgba(31, 77, 47, 0.78) 48%, rgba(31, 77, 47, 0.5) 100%),
+        url("../img/hero-papa-huancayo.png") center / cover no-repeat;
+    color: var(--blanco);
+}
+
+.barra-navegacion {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 18px 5%;
+}
+
+.marca {
+    align-items: center;
+    display: inline-flex;
+    font-weight: 800;
+    gap: 12px;
+}
+
+.marca-icono {
+    align-items: center;
+    background: transparent;
+    display: inline-flex;
+    height: 40px;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0;
+    width: 40px;
+}
+
+.marca-icono img {
+    display: block;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.22));
+    height: 40px;
+    object-fit: contain;
+    width: 40px;
+}
+
+.marca-texto {
+    display: grid;
+    line-height: 1.1;
+}
+
+.marca-texto strong {
+    font-size: 19px;
+}
+
+.marca-texto small {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.enlaces-navegacion {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.enlaces-navegacion a {
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.enlaces-navegacion a:hover {
+    color: var(--blanco);
+}
+
+.hero {
+    align-items: stretch;
+    display: grid;
+    gap: 28px;
+    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.7fr);
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 48px 5% 64px;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 7vw, 68px);
+    line-height: 1.04;
+    max-width: 850px;
+}
+
+.hero-texto {
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 19px;
+    margin-top: 20px;
+    max-width: 720px;
+}
+
+.hero-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 30px;
+}
+
+.hero-panel {
+    align-self: end;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.hero-panel h2 {
+    font-size: 24px;
+    line-height: 1.2;
+    margin: 10px 0 12px;
+}
+
+.hero-panel p {
+    color: rgba(255, 255, 255, 0.82);
+}
+
+main {
+    margin: -32px auto 0;
+    max-width: 1200px;
+    padding: 0 5% 42px;
+}
+
+.bloque {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    box-shadow: var(--sombra);
+    margin-bottom: 24px;
+    padding: 28px;
+}
+
+.bloque-compacto {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+}
+
+.encabezado-seccion {
+    margin-bottom: 22px;
+}
+
+.encabezado-seccion h2,
+.bloque h2 {
+    color: var(--verde-oscuro);
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+.encabezado-seccion p,
+.bloque > p,
+.tarjeta small {
+    color: var(--texto-suave);
+}
+
+.etiqueta,
+.panel-etiqueta {
+    color: var(--dorado);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+/* ==============================
+   Botones y formularios
+================================ */
+
+.boton,
+#btnAdmin {
+    align-items: center;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    font-weight: 800;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 18px;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.boton:hover,
+#btnAdmin:hover {
+    transform: translateY(-1px);
+}
+
+.boton-primario,
+#btnAdmin {
+    background: var(--verde);
+    color: var(--blanco);
+}
+
+.boton-primario:hover,
+#btnAdmin:hover {
+    background: var(--verde-oscuro);
+}
+
+.boton-secundario {
+    background: var(--tierra-claro);
+    color: var(--verde-oscuro);
+}
+
+.boton-secundario:hover {
+    background: #e4d2b8;
+}
+
+.campo-formulario label,
+#asistenteNegociacion label,
+#filtroFechas label {
+    color: var(--texto);
+    display: block;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.campo-formulario input,
+#asistenteNegociacion input,
+#filtroFechas input {
+    background: #fbfcf8;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    color: var(--texto);
+    min-height: 46px;
+    padding: 11px 13px;
+    width: 100%;
+}
+
+.campo-formulario input:focus,
+#asistenteNegociacion input:focus,
+#filtroFechas input:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(47, 125, 69, 0.14);
+    outline: none;
+}
+
+.panel-formulario {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.panel-formulario .boton {
+    align-self: end;
+}
+
+.contenedor-filtros {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.acciones-filtro {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+/* ==============================
    Tarjetas
-========================== */
+================================ */
 
-.contenedor-tarjetas{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-
-    gap:20px;
-
+.contenedor-tarjetas {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
 }
 
-.tarjeta{
-
-    background:#ffffff;
-
-    border-left:6px solid #2E7D32;
-
-    border-radius:10px;
-
-    padding:20px;
-
-    text-align:center;
-
-    box-shadow:0 2px 5px rgba(0,0,0,.15);
-
+.tarjeta {
+    background: #fbfcf8;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    padding: 22px;
 }
 
-.tarjeta h3{
-
-    color:#2E7D32;
-
-    margin-bottom:15px;
-
+.tarjeta-destacada {
+    background: var(--verde-claro);
+    border-color: #b8d5b3;
 }
 
-.tarjeta p{
-
-    font-size:28px;
-
-    font-weight:bold;
-
+.tarjeta h3 {
+    color: var(--texto-suave);
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
 }
 
-/* ==========================
+.tarjeta p {
+    color: var(--verde-oscuro);
+    font-size: 30px;
+    font-weight: 900;
+    line-height: 1.1;
+}
+
+.tarjeta small {
+    display: block;
+    margin-top: 10px;
+}
+
+.tarjeta .detalle {
+    color: var(--texto-suave);
+    font-size: 15px;
+    font-weight: 400;
+    margin-top: 8px;
+}
+
+.prediccion-grid {
+    align-items: stretch;
+    display: grid;
+    gap: 18px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+}
+
+.prediccion-resumen {
+    background: var(--tierra-claro);
+    border-radius: 8px;
+    padding: 22px;
+}
+
+.prediccion-resumen h3 {
+    color: var(--verde-oscuro);
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.prediccion-resumen p {
+    color: var(--texto-suave);
+}
+
+/* ==============================
+   Resultado de negociacion
+================================ */
+
+#resultadoNegociacion {
+    margin-top: 22px;
+}
+
+.resultado-panel {
+    border-radius: 8px;
+    border-top: 5px solid var(--verde);
+    padding-top: 18px;
+}
+
+.resultado-panel.alerta {
+    border-color: var(--alerta);
+}
+
+.resultado-panel.exito {
+    border-color: var(--exito);
+}
+
+.resultado-panel.neutral {
+    border-color: var(--dorado);
+}
+
+.resultado-encabezado {
+    background: #fbfcf8;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 18px;
+}
+
+.resultado-encabezado h3 {
+    color: var(--verde-oscuro);
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.resultado-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+
+.resultado-card {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.resultado-card span {
+    color: var(--texto-suave);
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.resultado-card strong {
+    color: var(--verde-oscuro);
+    display: block;
+    font-size: 24px;
+    line-height: 1.15;
+    margin-top: 8px;
+}
+
+.resultado-card p {
+    color: var(--texto-suave);
+    margin-top: 8px;
+}
+
+.mensaje-error,
+.mensaje-alerta,
+.mensaje-neutral,
+.mensaje-exito {
+    border-radius: 8px;
+    font-weight: 700;
+    padding: 14px 16px;
+}
+
+.mensaje-error {
+    background: #fdecea;
+    color: var(--error);
+}
+
+.mensaje-alerta {
+    background: #fff5df;
+    color: var(--alerta);
+}
+
+.mensaje-neutral {
+    background: var(--tierra-claro);
+    color: var(--tierra);
+}
+
+.mensaje-exito {
+    background: var(--verde-claro);
+    color: var(--exito);
+}
+
+/* ==============================
    Tabla
-========================== */
+================================ */
 
-table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-    margin-top:20px;
-
+#tablaPrecios {
+    overflow-x: auto;
 }
 
-th{
-
-    background:#2E7D32;
-
-    color:white;
-
-    padding:12px;
-
+table {
+    border-collapse: collapse;
+    margin-top: 18px;
+    min-width: 520px;
+    width: 100%;
 }
 
-td{
-
-    padding:10px;
-
-    border-bottom:1px solid #ddd;
-
-    text-align:center;
-
+th {
+    background: var(--verde-oscuro);
+    color: var(--blanco);
+    padding: 13px;
+    text-align: left;
 }
 
-tr:nth-child(even){
-
-    background:#f7f7f7;
-
+td {
+    border-bottom: 1px solid var(--borde);
+    padding: 12px 13px;
 }
 
-tr:hover{
-
-    background:#e8f5e9;
-
+tr:nth-child(even) {
+    background: #fbfcf8;
 }
 
-/* ==========================
-   Gráfico
-========================== */
-
-#grafico{
-
-    height:500px;
-
+tr:hover {
+    background: var(--verde-claro);
 }
 
-#grafico canvas{
+/* ==============================
+   Grafico
+================================ */
 
-    width:100% !important;
-
-    height:420px !important;
-
+.contenedor-grafico {
+    height: 420px;
+    position: relative;
 }
 
-#btnAdmin{
-
-    width:100%;
-
-    padding:15px;
-
-    background:#2E7D32;
-
-    color:white;
-
-    border:none;
-
-    border-radius:8px;
-
-    font-size:18px;
-
-    cursor:pointer;
-
+#graficoPrecios {
+    height: 100% !important;
+    width: 100% !important;
 }
 
-#btnAdmin:hover{
+/* ==============================
+   Administracion y footer
+================================ */
 
-    background:#256628;
-
+.bloque-admin {
+    padding: 0;
 }
 
-/* ==========================
-    Responsive
-========================== */
-
-#tablaPrecios{
-
-    overflow-x:auto;
-
+.bloque-admin a {
+    display: block;
 }
 
-/* ==========================
-    Asistente
-========================== */
-
-#asistenteNegociacion label{
-    display:block;
-    margin-top:15px;
-    font-weight:bold;
-    color:#333;
+#btnAdmin {
+    border-radius: 8px;
+    min-height: 58px;
+    width: 100%;
 }
 
-#asistenteNegociacion input{
-    width:100%;
-    padding:12px;
-    margin-top:8px;
-    margin-bottom:15px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    font-size:16px;
+.pie-pagina {
+    background: var(--verde-oscuro);
+    color: rgba(255, 255, 255, 0.84);
+    padding: 24px 5%;
+    text-align: center;
 }
 
-#asistenteNegociacion button{
-    padding:12px 20px;
-    background:#2E7D32;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
+/* ==============================
+   Responsive
+================================ */
+
+@media (max-width: 900px) {
+    .barra-navegacion,
+    .hero,
+    .prediccion-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .barra-navegacion {
+        align-items: flex-start;
+        display: grid;
+        gap: 14px;
+    }
+
+    .hero {
+        padding-top: 38px;
+    }
+
+    .panel-formulario,
+    .contenedor-filtros {
+        grid-template-columns: 1fr;
+    }
 }
 
-#asistenteNegociacion button:hover{
-    background:#256628;
+@media (max-width: 620px) {
+    .enlaces-navegacion {
+        gap: 10px;
+    }
+
+    .enlaces-navegacion a {
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        padding: 8px 10px;
+    }
+
+    main {
+        margin-top: -24px;
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+
+    .bloque {
+        padding: 20px;
+    }
+
+    .bloque-compacto {
+        align-items: flex-start;
+        display: grid;
+    }
+
+    .hero-acciones,
+    .acciones-filtro {
+        display: grid;
+    }
+
+    .boton,
+    #btnAdmin {
+        width: 100%;
+    }
+
+    .tarjeta p,
+    .resultado-card strong {
+        font-size: 25px;
+    }
 }
-
-#resultadoNegociacion{
-    margin-top:20px;
-}
-
-/* ==========================
-    Nose xd
-========================== */
-
-.contenedor-filtros{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    margin-top:15px;
-    margin-bottom:20px;
-}
-
-#filtroFechas label{
-    display:block;
-    margin-bottom:8px;
-    font-weight:bold;
-    color:#333;
-}
-
-#filtroFechas input{
-    width:100%;
-    padding:12px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    font-size:16px;
-}
-
-#filtroFechas button{
-    padding:12px 20px;
-    margin-right:10px;
-    margin-bottom:10px;
-    background:#2E7D32;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
-}
-
-#filtroFechas button:hover{
-    background:#256628;
-} 
