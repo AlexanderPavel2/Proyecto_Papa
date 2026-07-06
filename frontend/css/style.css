@@ -124,6 +124,17 @@ button {
     color: var(--blanco);
 }
 
+.enlaces-navegacion .enlace-admin {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 8px;
+    padding: 7px 10px;
+}
+
+.enlaces-navegacion .enlace-admin:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 .hero {
     align-items: stretch;
     display: grid;
@@ -224,8 +235,7 @@ main {
    Botones y formularios
 ================================ */
 
-.boton,
-#btnAdmin {
+.boton {
     align-items: center;
     border-radius: 8px;
     cursor: pointer;
@@ -237,19 +247,16 @@ main {
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.boton:hover,
-#btnAdmin:hover {
+.boton:hover {
     transform: translateY(-1px);
 }
 
-.boton-primario,
-#btnAdmin {
+.boton-primario {
     background: var(--verde);
     color: var(--blanco);
 }
 
-.boton-primario:hover,
-#btnAdmin:hover {
+.boton-primario:hover {
     background: var(--verde-oscuro);
 }
 
@@ -538,22 +545,8 @@ tr:hover {
 }
 
 /* ==============================
-   Administracion y footer
+   Footer
 ================================ */
-
-.bloque-admin {
-    padding: 0;
-}
-
-.bloque-admin a {
-    display: block;
-}
-
-#btnAdmin {
-    border-radius: 8px;
-    min-height: 58px;
-    width: 100%;
-}
 
 .pie-pagina {
     background: var(--verde-oscuro);
@@ -620,8 +613,7 @@ tr:hover {
         display: grid;
     }
 
-    .boton,
-    #btnAdmin {
+    .boton {
         width: 100%;
     }
 

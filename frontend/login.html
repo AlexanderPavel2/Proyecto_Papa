@@ -2,67 +2,51 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Inicio de Sesión</title>
-
+    <title>Acceso administrador | RantiPapa</title>
     <link rel="stylesheet" href="css/login.css">
-
 </head>
 
 <body>
+    <main class="pagina-login">
+        <section class="login-card" aria-labelledby="tituloLogin">
+            <a class="marca-login" href="index.html" aria-label="Volver al inicio">
+                <img src="img/rantipapa-logo.png" alt="">
+                <span>
+                    <strong>RantiPapa</strong>
+                    <small>Panel de datos</small>
+                </span>
+            </a>
 
-    <div class="login-container">
+            <div class="encabezado-login">
+                <p class="etiqueta">Administracion</p>
+                <h1 id="tituloLogin">Acceso administrador</h1>
+                <p>Ingresa tus credenciales para administrar los datos del sistema.</p>
+            </div>
 
-        <h1>Administrador</h1>
+            <form id="loginForm" class="formulario-login">
+                <div class="campo-login">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" placeholder="Ingrese su usuario" autocomplete="username" required>
+                </div>
 
-        <form id="loginForm">
+                <div class="campo-login">
+                    <label for="password">Contrasena</label>
+                    <input type="password" id="password" placeholder="Ingrese su contrasena" autocomplete="current-password" required>
+                </div>
 
-            <label>Usuario</label>
+                <button type="submit">Ingresar al panel</button>
+            </form>
 
-            <input
-                type="text"
-                id="usuario"
-                placeholder="Ingrese su usuario"
-                required
-            >
+            <p id="mensaje" aria-live="polite"></p>
 
-            <label>Contraseña</label>
-
-            <input
-                type="password"
-                id="password"
-                placeholder="Ingrese su contraseña"
-                required
-            >
-
-            <button type="submit">
-
-                Iniciar Sesión
-
-            </button>
-
-        </form>
-
-        <p id="mensaje"></p>
-
-        <br>
-
-        <a href="index.html">
-
-            ← Volver al inicio
-
-        </a>
-
-    </div>
+            <a class="volver-inicio" href="index.html">Volver al inicio</a>
+        </section>
+    </main>
 
     <script src="js/api.js"></script>
-
     <script src="js/login.js"></script>
-
 </body>
 
 </html>

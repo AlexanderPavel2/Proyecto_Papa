@@ -2,103 +2,68 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Panel del Administrador</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel administrador | RantiPapa</title>
     <link rel="stylesheet" href="css/admin.css">
-
 </head>
 
 <body>
-
     <div class="contenedor">
+        <header class="cabecera-admin">
+            <a class="marca-admin" href="index.html" aria-label="Volver al inicio">
+                <img src="img/rantipapa-logo.png" alt="">
+                <span>
+                    <strong>RantiPapa</strong>
+                    <small>Panel administrador</small>
+                </span>
+            </a>
 
-        <header>
-
-            <h1>Sistema de Predicción del Precio de la Papa</h1>
-
-            <p>Mercado Mayorista de Huancayo</p>
-
-        </header>
-
-        <!-- ==========================
-             ACTUALIZAR EXCEL
-        =========================== -->
-
-        <section class="card">
-
-            <h2>Actualización semanal de precios</h2>
-
-            <p class="descripcion">
-
-                Seleccione el archivo Excel con los precios de esta semana.
-
-            </p>
-
-            <input
-                type="file"
-                id="archivoExcel"
-                accept=".xlsx">
-
-            <p id="nombreArchivo">
-
-                Ningún archivo seleccionado.
-
-            </p>
-
-            <button
-                id="btnActualizar"
-                type="button">
-
-                Actualizar Base de Datos
-
-            </button>
-
-        </section>
-
-        <!-- ==========================
-            RESULTADO
-        =========================== -->
-
-        <section class="card">
-
-            <h2>Resultado</h2>
-
-            <div id="resultado">
-
-                Esperando actualización...
-
+            <div class="titulo-admin">
+                <p class="etiqueta">Administracion</p>
+                <h1>Gestion de datos del sistema</h1>
+                <p>Actualiza los precios semanales para mantener la informacion al dia.</p>
             </div>
 
-        </section>
+            <button id="btnSalir" class="boton-salir" type="button">Cerrar sesion</button>
+        </header>
 
-        <!-- ==========================
-            CERRAR SESIÓN
-        =========================== -->
+        <main class="panel-admin">
+            <section class="card card-principal" aria-labelledby="tituloActualizar">
+                <div class="encabezado-card">
+                    <p class="etiqueta">Carga de Excel</p>
+                    <h2 id="tituloActualizar">Actualizacion semanal de precios</h2>
+                    <p>Seleccione el archivo Excel con los precios de esta semana.</p>
+                </div>
 
-        <section class="acciones">
+                <label class="selector-archivo" for="archivoExcel">
+                    <span>Seleccionar archivo Excel</span>
+                    <input type="file" id="archivoExcel" accept=".xlsx">
+                </label>
 
-            <button
-                id="btnSalir"
-                type="button">
+                <p id="nombreArchivo">Ningun archivo seleccionado.</p>
 
-                Cerrar sesión
+                <button id="btnActualizar" class="boton-principal" type="button">
+                    Actualizar base de datos
+                </button>
+            </section>
 
-            </button>
+            <section class="card" aria-labelledby="tituloResultado">
+                <div class="encabezado-card">
+                    <p class="etiqueta">Estado</p>
+                    <h2 id="tituloResultado">Resultado de actualizacion</h2>
+                    <p>Revise aqui el estado de la carga y del modelo.</p>
+                </div>
 
-        </section>
-
+                <div id="resultado">
+                    Esperando actualizacion...
+                </div>
+            </section>
+        </main>
     </div>
 
     <script src="js/api.js"></script>
-
     <script src="js/admin.js"></script>
-
 </body>
 
 </html>
